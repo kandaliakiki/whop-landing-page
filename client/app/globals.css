@@ -24,3 +24,94 @@ body {
   font-weight: 500;
   line-height: 1.4;
 }
+
+/* Gold arrow animation */
+.gold-arrow {
+  color: #f8c146; /* gold */
+  margin-left: 10px;
+  animation: gentle-pulse 2s ease-in-out infinite;
+  display: inline-block;
+  font-size: 2.5rem;
+  /* outline in lighter gold */
+  text-shadow: 0 0 2px #fde7bb, /* soft outer gold */ 1px 1px 0 #fde7bb,
+    -1px -1px 0 #fde7bb, 1px -1px 0 #fde7bb, -1px 1px 0 #fde7bb, 0 1px 0 #fde7bb,
+    0 -1px 0 #fde7bb, 1px 0 0 #fde7bb, -1px 0 0 #fde7bb; /* #fde7bb is a lighter gold than #f8c146 */
+}
+
+@keyframes gentle-pulse {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+
+/* Success pulse loader */
+.pulse-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.success-pulse {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(45deg, #f9e79f, #e7b8a5);
+  animation: success-pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(249, 231, 159, 0.5);
+}
+
+@keyframes success-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.8;
+    box-shadow: 0 0 20px rgba(249, 231, 159, 0.5);
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+    box-shadow: 0 0 30px rgba(249, 231, 159, 0.8);
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.8;
+    box-shadow: 0 0 20px rgba(249, 231, 159, 0.5);
+  }
+}
+
+/* Force native radio inner dot to white */
+input[type="radio"] {
+  background-color: #ffffff;
+}
+input[type="radio"]:checked {
+  background-color: #ffffff;
+  background-image: radial-gradient(#ffffff 35%, transparent 36%);
+}
+
+.custom-radio {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--radio-accent, #d1d5db);
+  position: relative;
+  outline: none;
+}
+.custom-radio:checked::after {
+  content: "";
+  position: absolute;
+  inset: 50% auto auto 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+  transform: translate(-50%, -50%);
+}
