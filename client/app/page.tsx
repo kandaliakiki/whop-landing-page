@@ -20,9 +20,7 @@ export default function Page() {
     // Show pulse immediately
     setIsRedirecting(true);
     setRedirectMessage(
-      gender === "male"
-        ? "✅ Verified. Redirecting you to Prime Lane…"
-        : "✅ Verified. Redirecting you to Her Lane…"
+      gender === "male" ? "Welcome to Prime Lane 🔥" : "Welcome to Her Lane 💫"
     );
 
     const target = gender === "male" ? MALE_URL : FEMALE_URL;
@@ -50,18 +48,15 @@ export default function Page() {
           mode: "no-cors",
           body: payload,
           keepalive: true,
-        })
-          .catch(() => {})
-          .finally(() => {
-            if (target) router.push(target);
-          });
-        return;
+        }).catch(() => {});
       } catch (err) {
-        if (target) router.push(target);
-        return;
+        // ignore
       }
     }
-    if (target) router.push(target);
+    // Always redirect from pulse after 2s
+    setTimeout(() => {
+      if (target) router.push(target);
+    }, 2000);
   };
 
   if (isRedirecting) {
@@ -70,13 +65,22 @@ export default function Page() {
         className="min-h-screen flex items-center justify-center"
         style={{ backgroundColor: gender === "male" ? "#FFFFFF" : "#FAFAF7" }}
       >
-        <div className="w-[90%] max-w-[360px] text-center">
-          <div className="pulse-loader">
-            <div className="success-pulse"></div>
-          </div>
-          <p className="text-[#1E1E1E] text-lg font-medium mt-4">
+        <div className="w-[90%] max-w-[320px] sm:max-w-[400px] text-center">
+          <h3 className="text-xl font-semibold text-[#1E1E1E]">
             {redirectMessage}
+          </h3>
+          <p className="text-[#6E6E6E] mt-1">
+            Redirecting to your exclusive lane…
           </p>
+
+          <div className="redirect-loader mt-12">
+            <div className="pulse-ring"></div>
+            <div className="dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
         </div>
       </main>
     );
@@ -87,57 +91,71 @@ export default function Page() {
       className="min-h-screen flex items-center justify-center"
       style={{ backgroundColor: gender === "male" ? "#FFFFFF" : "#FAFAF7" }}
     >
-      <div className="w-[90%] max-w-[360px] text-center">
-        <h2 className="text-[1.6rem] font-semibold mb-2 text-[#1E1E1E]">
+      <div className="w-[90%] max-w-[320px] sm:max-w-[400px] text-center">
+        <h2 className="text-[1.4rem] sm:text-[2rem] font-semibold mb-2 text-[#1E1E1E]">
           Prove you're not a bot.
-          <span className="gold-arrow">→</span>
         </h2>
-        <p className="mb-6 text-base text-[#6E6E6E]">
+        <p className="mb-6 text-sm sm:text-lg text-[#6E6E6E]">
           Just in time for the holidays — verify below to access your private
           lane before it closes.
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-          <input
-            required
-            type="email"
-            placeholder="Your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="h-12 w-full rounded-lg border-0 px-4 py-3 text-base outline-none bg-white shadow-sm focus:ring-2 focus:ring-[#E7B8A5] transition-all"
-            style={{ boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}
-          />
+          <div className="flex items-center gap-2">
+            <span className="text-2xl sm:text-xl pointer-animated" aria-hidden>
+              👉
+            </span>
+            <input
+              required
+              type="email"
+              placeholder="Your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="h-12 sm:h-10 flex-1 rounded-lg px-4 py-3 text-sm sm:text-lg outline-none bg-white transition-all border"
+              style={{
+                borderColor: gender === "male" ? "#255DF6" : "#E7B8A5",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+              }}
+            />
+            <span className="text-2xl sm:text-xl invisible" aria-hidden>
+              👉
+            </span>
+          </div>
 
-          <div className="flex items-center justify-center gap-6 py-3">
-            <label className="flex items-center gap-3 cursor-pointer">
+          <div className="flex items-center justify-center gap-6 sm:gap-4 py-3">
+            <label className="flex items-center gap-3 sm:gap-2 cursor-pointer">
               <input
                 name="gender"
                 type="radio"
                 value="female"
                 checked={gender === "female"}
                 onChange={() => setGender("female")}
-                className="size-5 rounded-full border-2 border-[#E7B8A5] accent-[#E7B8A5]"
+                className="size-5 sm:size-4 rounded-full border-2 border-[#E7B8A5] accent-[#E7B8A5]"
                 required
               />
-              <span className="text-[#1E1E1E] font-medium">Female</span>
+              <span className="text-[#1E1E1E] font-medium text-sm sm:text-lg">
+                Female
+              </span>
             </label>
-            <label className="flex items-center gap-3 cursor-pointer">
+            <label className="flex items-center gap-3 sm:gap-2 cursor-pointer">
               <input
                 name="gender"
                 type="radio"
                 value="male"
                 checked={gender === "male"}
                 onChange={() => setGender("male")}
-                className="size-5 rounded-full border-2 border-[#255DF6] accent-[#255DF6]"
+                className="size-5 sm:size-4 rounded-full border-2 border-[#255DF6] accent-[#255DF6]"
                 required
               />
-              <span className="text-[#1E1E1E] font-medium">Male</span>
+              <span className="text-[#1E1E1E] font-medium text-sm sm:text-lg">
+                Male
+              </span>
             </label>
           </div>
 
           <button
             type="submit"
-            className="w-full h-12 rounded-lg text-white font-semibold transition-all hover:opacity-90"
+            className="w-full h-12 sm:h-10 rounded-lg text-white font-semibold transition-all hover:opacity-90 text-sm sm:text-lg"
             style={{
               backgroundColor: gender === "male" ? "#255DF6" : "#E7B8A5",
               color: gender === "male" ? "#FFFFFF" : "#2F3439",
