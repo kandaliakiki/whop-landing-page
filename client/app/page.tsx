@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const GAS_ENDPOINT = process.env.NEXT_PUBLIC_GAS_ENDPOINT || "";
 const MALE_URL = process.env.NEXT_PUBLIC_WHOP_MALE_URL || "";
@@ -9,10 +9,19 @@ const FEMALE_URL = process.env.NEXT_PUBLIC_WHOP_FEMALE_URL || "";
 
 export default function Page() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [gender, setGender] = useState<"male" | "female" | "">("");
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [redirectMessage, setRedirectMessage] = useState("");
+
+  // Handle gender parameter from URL
+  useEffect(() => {
+    const genderParam = searchParams.get("gender");
+    if (genderParam === "male" || genderParam === "female") {
+      setGender(genderParam);
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
