@@ -3,67 +3,16 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
-const GAS_ENDPOINT = process.env.NEXT_PUBLIC_GAS_ENDPOINT || "";
-const MALE_URL = process.env.NEXT_PUBLIC_WHOP_MALE_URL || "";
-const FEMALE_URL = process.env.NEXT_PUBLIC_WHOP_FEMALE_URL || "";
-
-export default function LandingPage() {
+export default function PrimeLanePage() {
   const router = useRouter();
-  const [gender, setGender] = useState<"male" | "female">("female");
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   const handleRedirect = () => {
-    // Redirect directly to main page with gender parameter
-    router.push(`/?gender=${gender}`);
+    // Redirect directly to main page with lane parameter
+    router.push(`/?lane=primelane`);
   };
 
-  const femaleContent = {
-    scrollStopper: "💖 Women are leveling up together — don't watch, join in.",
-    banner: "💫 FOUNDING CIRCLE ACCESS — 500 Lifetime Spots Only",
-    headline: "👑 Step Into Her Lane Before It Goes Private",
-    subheadline:
-      "A private space where women turn ambition into independence and inspiration into income.",
-    body: "Your AI-powered hub for lifestyle, wellness, finance, travel, and micro-hustles — curated daily to elevate every part of your life.",
-    benefits: [
-      {
-        icon: "💅",
-        title: "Beauty & Lifestyle Lane",
-        desc: "exclusive drops, deals & fashion finds",
-      },
-      {
-        icon: "💰",
-        title: "Micro-Hustle & Finance Lane",
-        desc: "earn smarter, invest easier (stocks, crypto, real estate)",
-      },
-      {
-        icon: "🌍",
-        title: "Travel & Health Lane",
-        desc: "curated trips & wellness hacks",
-      },
-      {
-        icon: "🎁",
-        title: "Holiday Lane",
-        desc: "end-of-year flips & gifting goldmines",
-      },
-      {
-        icon: "🧠",
-        title: "Biohacking & Longevity Lane",
-        desc: "maximize energy, fitness & mental wellness",
-      },
-    ],
-    additionalText:
-      "⚡ Each lane drops daily prompts, strategies, and offers designed to help you level up — with women on the same path.",
-    pricing: "🔐 Pre-Launch Reward",
-    pricingMain: "Lifetime Founding Access → $29.99 one-time",
-    pricingAfter: "After launch → $59.99/month or $9.99/wk per lane",
-    cta: "✨ Claim My Founding Access →",
-    ctaSubtext: "(Only 500 Total Spots)",
-    urgency: "⚡ Once 500 are in, Her Lane goes invite-only.",
-    urgencySub: "Access unlocks automatically when lanes go live.",
-    bonus:
-      "✅ Founding Members get early-lane access links before public launch.",
-  };
-
-  const maleContent = {
+  const content = {
     scrollStopper:
       "⚔️ The men who move quiet are winning loud — join the network.",
     banner: "⚔️ FOUNDING OPERATOR ACCESS — 500 Lifetime Entries Only",
@@ -75,27 +24,32 @@ export default function LandingPage() {
       {
         icon: "💸",
         title: "Hustle & Income Lane",
-        desc: "daily cashflow plays & earning tactics",
+        desc: "Daily cashflow plays & earning tactics",
       },
       {
         icon: "📈",
         title: "Finance & Investing Lane",
-        desc: "actionable market insights (stocks, crypto, real estate)",
+        desc: "Actionable market insights (stocks, crypto, real estate)",
+      },
+      {
+        icon: "🏈",
+        title: "Sports Bets Lane",
+        desc: "Daily action plays, insider strategies, and high-probability wins",
       },
       {
         icon: "⚙️",
         title: "Lifestyle & Gear Lane",
-        desc: "tools, tech, and top-tier product drops",
+        desc: "Tools, tech, and top-tier product drops",
       },
       {
         icon: "🧠",
         title: "Biohacking & Fitness Lane",
-        desc: "performance, recovery, and focus frameworks",
+        desc: "Performance, recovery, and focus frameworks",
       },
       {
         icon: "🎁",
         title: "Holiday Lane",
-        desc: "seasonal profit plays and market flips",
+        desc: "Seasonal profit plays and market flips",
       },
     ],
     additionalText:
@@ -111,20 +65,17 @@ export default function LandingPage() {
       "✅ Founding Operators receive early access to the full network before the public launch window.",
   };
 
-  const content = gender === "male" ? maleContent : femaleContent;
-  const primaryColor = gender === "male" ? "#255DF6" : "#E7B8A5";
-  const textColor = gender === "male" ? "#FFFFFF" : "#2F3439";
-  const accentColor = gender === "male" ? "#1A1F36" : "#F9D9E3";
+  const primaryColor = "#255DF6";
+  const textColor = "#FFFFFF";
+  const accentColor = "#1A1F36";
 
   return (
     <main
       className="min-h-screen relative overflow-hidden"
       style={{
-        backgroundColor: gender === "male" ? "#0F0F23" : "#1A0B0B",
+        backgroundColor: "#0F0F23",
         backgroundImage:
-          gender === "male"
-            ? "radial-gradient(circle at 20% 80%, rgba(37, 93, 246, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(37, 93, 246, 0.05) 0%, transparent 50%)"
-            : "radial-gradient(circle at 20% 80%, rgba(231, 184, 165, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(231, 184, 165, 0.05) 0%, transparent 50%)",
+          "radial-gradient(circle at 20% 80%, rgba(37, 93, 246, 0.1) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(37, 93, 246, 0.05) 0%, transparent 50%)",
       }}
     >
       {/* Animated Background Elements */}
@@ -144,42 +95,6 @@ export default function LandingPage() {
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-16">
-        {/* Premium Gender Toggle */}
-        <div className="flex justify-center mb-8 sm:mb-16">
-          <div className="relative bg-black/20 backdrop-blur-xl rounded-2xl p-1 sm:p-2 border border-white/10 shadow-2xl flex">
-            <div
-              className="absolute top-1 bottom-1 sm:top-2 sm:bottom-2 w-1/2 rounded-xl transition-all duration-500 ease-out"
-              style={{
-                backgroundColor: gender === "female" ? "#E7B8A5" : "#255DF6",
-                left: gender === "female" ? "4px" : "calc(50% + 2px)",
-                boxShadow: `0 8px 32px ${
-                  gender === "female"
-                    ? "rgba(231, 184, 165, 0.4)"
-                    : "rgba(37, 93, 246, 0.4)"
-                }`,
-              }}
-            />
-            <button
-              onClick={() => setGender("female")}
-              className="relative z-10 px-6 sm:px-12 py-3 sm:py-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300"
-              style={{
-                color: gender === "female" ? "#2F3439" : "#FFFFFF",
-              }}
-            >
-              Female
-            </button>
-            <button
-              onClick={() => setGender("male")}
-              className="relative z-10 px-6 sm:px-12 py-3 sm:py-4 rounded-xl text-xs sm:text-sm font-bold transition-all duration-300"
-              style={{
-                color: gender === "male" ? "#FFFFFF" : "#FFFFFF",
-              }}
-            >
-              Male
-            </button>
-          </div>
-        </div>
-
         {/* Hero Section */}
         <div className="text-center mb-12 sm:mb-20">
           {/* Scroll Stopper */}
@@ -221,8 +136,7 @@ export default function LandingPage() {
         {/* Benefits Section */}
         <div className="mb-12 sm:mb-20">
           <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-8 sm:mb-16 text-center px-4">
-            {gender === "male" ? "🚀" : "🌸"} Inside{" "}
-            {gender === "male" ? "Prime Lane" : "Her Lane"}, You'll Unlock:
+            🚀 Inside Prime Lane, You'll Unlock:
           </h2>
 
           <div className="grid sm:grid-cols-2 gap-4 sm:gap-8 mb-8 sm:mb-12">

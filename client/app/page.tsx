@@ -15,11 +15,14 @@ export default function Page() {
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [redirectMessage, setRedirectMessage] = useState("");
 
-  // Handle gender parameter from URL
+  // Handle lane parameter from URL
   useEffect(() => {
-    const genderParam = searchParams.get("gender");
-    if (genderParam === "male" || genderParam === "female") {
-      setGender(genderParam);
+    const laneParam = searchParams.get("lane");
+
+    if (laneParam === "herlane") {
+      setGender("female");
+    } else if (laneParam === "primelane") {
+      setGender("male");
     }
   }, [searchParams]);
 
