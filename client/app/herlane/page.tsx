@@ -1,16 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 export default function HerLanePage() {
   const router = useRouter();
   const [isRedirecting, setIsRedirecting] = useState(false);
+  const [showStickyCTA, setShowStickyCTA] = useState(false);
 
   const handleRedirect = () => {
     // Redirect directly to main page with lane parameter
     router.push(`/?lane=herlane`);
   };
+
+  // Handle scroll to show sticky CTA after pricing section
+  useEffect(() => {
+    const handleScroll = () => {
+      // Show sticky CTA after user scrolls past the pricing section
+      const pricingSection = document.querySelector("[data-pricing-section]");
+      if (pricingSection) {
+        const rect = pricingSection.getBoundingClientRect();
+        setShowStickyCTA(rect.bottom < window.innerHeight);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const content = {
     scrollStopper: "💖 Women are leveling up together — don't watch, join in.",
@@ -130,6 +146,24 @@ export default function HerLanePage() {
           <p className="text-base sm:text-lg md:text-xl text-white/70 max-w-3xl mx-auto leading-relaxed font-light px-4">
             {content.body}
           </p>
+
+          {/* Above the Fold CTA */}
+          <div className="mt-8 sm:mt-12">
+            <button
+              onClick={handleRedirect}
+              className="w-full max-w-md mx-auto h-14 sm:h-16 rounded-2xl font-black text-lg sm:text-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl block"
+              style={{
+                backgroundColor: primaryColor,
+                color: textColor,
+                boxShadow: `0 20px 40px ${primaryColor}40`,
+              }}
+            >
+              💫 Claim My Founding Access
+            </button>
+            <p className="text-white/60 mt-3 text-sm sm:text-base font-medium text-center">
+              500 lifetime spots only — ends soon.
+            </p>
+          </div>
         </div>
 
         {/* Benefits Section */}
@@ -169,10 +203,25 @@ export default function HerLanePage() {
               {content.additionalText}
             </p>
           </div>
+
+          {/* Mid-Scroll CTA */}
+          <div className="mt-8 sm:mt-12">
+            <button
+              onClick={handleRedirect}
+              className="w-full max-w-md mx-auto h-14 sm:h-16 rounded-2xl font-black text-lg sm:text-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl block"
+              style={{
+                backgroundColor: primaryColor,
+                color: textColor,
+                boxShadow: `0 20px 40px ${primaryColor}40`,
+              }}
+            >
+              ✨ Join Her Lane Before It Goes Private
+            </button>
+          </div>
         </div>
 
         {/* Pricing Section */}
-        <div className="text-center mb-12 sm:mb-20">
+        <div className="text-center mb-12 sm:mb-20" data-pricing-section>
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-8 sm:mb-12 px-4">
             {content.pricing}
           </h3>
@@ -191,29 +240,10 @@ export default function HerLanePage() {
               </div>
             </div>
           </div>
-
-          {/* CTA Button */}
-          <div className="max-w-lg mx-auto px-4">
-            <button
-              onClick={handleRedirect}
-              className="w-full h-12 sm:h-14 md:h-16 rounded-2xl font-black text-lg sm:text-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-              style={{
-                backgroundColor: primaryColor,
-                color: textColor,
-                boxShadow: `0 20px 40px ${primaryColor}40`,
-              }}
-            >
-              {content.cta}
-            </button>
-
-            <p className="text-white/60 mt-4 sm:mt-6 text-sm sm:text-lg font-medium text-center">
-              {content.ctaSubtext}
-            </p>
-          </div>
         </div>
 
         {/* Footer Section */}
-        <div className="text-center">
+        <div className="text-center pb-14">
           <div className="inline-block px-4 sm:px-8 py-4 sm:py-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/20 mb-8 mx-4">
             <p className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-3">
               {content.urgency}
@@ -225,6 +255,29 @@ export default function HerLanePage() {
               {content.bonus}
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* Sticky CTA */}
+      <div
+        className={`fixed bottom-0 left-0 right-0 z-50 p-4 bg-black/80 backdrop-blur-xl border-t border-white/10 transition-all duration-500 ease-out ${
+          showStickyCTA
+            ? "translate-y-0 opacity-100"
+            : "translate-y-full opacity-0"
+        }`}
+      >
+        <div className="max-w-4xl mx-auto">
+          <button
+            onClick={handleRedirect}
+            className="w-full h-14 sm:h-16 rounded-2xl font-black text-lg sm:text-xl transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+            style={{
+              backgroundColor: primaryColor,
+              color: textColor,
+              boxShadow: `0 20px 40px ${primaryColor}40`,
+            }}
+          >
+            👠 I'm In — Unlock Her Lane
+          </button>
         </div>
       </div>
     </main>
