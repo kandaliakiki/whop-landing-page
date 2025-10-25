@@ -2,10 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { WhopCheckoutEmbed } from "@whop/checkout/react";
 
 const GAS_ENDPOINT = process.env.NEXT_PUBLIC_GAS_ENDPOINT || "";
 const MALE_URL = process.env.NEXT_PUBLIC_WHOP_MALE_URL || "";
 const FEMALE_URL = process.env.NEXT_PUBLIC_WHOP_FEMALE_URL || "";
+const MALE_PLAN_ID = process.env.NEXT_PUBLIC_WHOP_MALE_PLAN_ID || "";
+const FEMALE_PLAN_ID = process.env.NEXT_PUBLIC_WHOP_FEMALE_PLAN_ID || "";
+const SHOW_TEST_BUTTON = process.env.NEXT_PUBLIC_SHOW_TEST_BUTTON === "true";
 
 export default function Page() {
   const router = useRouter();
@@ -14,6 +18,16 @@ export default function Page() {
   const [gender, setGender] = useState<"male" | "female" | "">("");
   const [isRedirecting, setIsRedirecting] = useState(false);
   const [redirectMessage, setRedirectMessage] = useState("");
+  const [showCheckout, setShowCheckout] = useState(false);
+
+  // Handle checkout completion (works for both real checkout and test)
+  const handleCheckoutComplete = (planId?: string, receiptId?: string) => {
+    console.log("Checkout completed!", { planId, receiptId });
+    // Redirect to success page using router
+    const successUrl =
+      gender === "male" ? "/success?lane=primelane" : "/success?lane=herlane";
+    router.push(successUrl);
+  };
 
   // Handle lane parameter from URL
   useEffect(() => {
@@ -65,9 +79,10 @@ export default function Page() {
         // ignore
       }
     }
-    // Always redirect from pulse after 2s
+    // Show checkout instead of redirecting
     setTimeout(() => {
-      if (target) router.push(target);
+      setIsRedirecting(false);
+      setShowCheckout(true);
     }, 2000);
   };
 
@@ -91,6 +106,62 @@ export default function Page() {
               <span></span>
               <span></span>
               <span></span>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
+
+  // Show checkout after verification
+  if (showCheckout) {
+    return (
+      <main
+        className="min-h-screen flex items-center justify-center p-4"
+        style={{ backgroundColor: gender === "male" ? "#FFFFFF" : "#FAFAF7" }}
+      >
+        <div className="w-full max-w-2xl">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-semibold mb-2 text-[#1E1E1E]">
+              {gender === "male"
+                ? "🔥 Prime Lane Checkout"
+                : "💫 Her Lane Checkout"}
+            </h2>
+            <p className="text-sm sm:text-lg text-[#6E6E6E]">
+              Complete your subscription to access your exclusive lane
+            </p>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-lg p-4 sm:p-6">
+            {/* TEST BUTTON - Only show if enabled in environment */}
+            {SHOW_TEST_BUTTON && (
+              <div className="mb-4 p-4 bg-yellow-100 border border-yellow-300 rounded-lg">
+                <p className="text-sm text-yellow-800 mb-2">🧪 TESTING MODE</p>
+                <button
+                  onClick={() => handleCheckoutComplete()}
+                  className="w-full bg-yellow-500 text-white py-2 px-4 rounded-lg font-semibold hover:bg-yellow-600 transition-colors"
+                >
+                  Simulate Checkout Complete (TEST ONLY)
+                </button>
+              </div>
+            )}
+
+            {/* Responsive Whop Checkout Container */}
+            <div className="w-full" style={{ minHeight: "600px" }}>
+              <WhopCheckoutEmbed
+                planId={gender === "male" ? MALE_PLAN_ID : FEMALE_PLAN_ID}
+                theme="light"
+                onComplete={handleCheckoutComplete}
+                skipRedirect={true}
+                fallback={
+                  <div className="flex items-center justify-center h-96 bg-gray-50 rounded-lg">
+                    <div className="text-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto mb-4"></div>
+                      <p className="text-gray-600">Loading checkout...</p>
+                    </div>
+                  </div>
+                }
+              />
             </div>
           </div>
         </div>
