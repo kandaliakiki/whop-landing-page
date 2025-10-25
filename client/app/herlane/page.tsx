@@ -70,7 +70,7 @@ export default function HerLanePage() {
     additionalText:
       "⚡ Each lane drops daily prompts, strategies, and offers designed to help you level up — with women on the same path.",
     pricing: "🔐 Pre-Launch Reward",
-    pricingMain: "Lifetime Founding Access → $29.99 one-time",
+    pricingMain: "Founding Access → $29.99/month",
     pricingAfter: "After launch → $59.99/month or $9.99/wk per lane",
     cta: "✨ Claim My Founding Access →",
     ctaSubtext: "(Only 500 Total Spots)",

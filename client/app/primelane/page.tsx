@@ -71,7 +71,7 @@ export default function PrimeLanePage() {
     additionalText:
       "💡 Each lane is designed to sharpen your execution, stack your income, and connect you with other high-intent men on the same grind.",
     pricing: "💪 Pre-Launch Reward",
-    pricingMain: "Lifetime Founding Access → $39.99 one-time",
+    pricingMain: "Founding Access → $39.99/month",
     pricingAfter: "After launch → $79.99/month or $14.99/wk per lane",
     cta: "💥 Join Now →",
     ctaSubtext: "(Only 500 Total Spots)",
