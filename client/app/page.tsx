@@ -176,11 +176,11 @@ export default function Page() {
     >
       <div className="w-[90%] max-w-[320px] sm:max-w-[400px] text-center">
         <h2 className="text-[1.4rem] sm:text-[2rem] font-semibold mb-2 text-[#1E1E1E]">
-          Prove you're not a bot.
+          Step Into Your Lane - Limited Spots Available
         </h2>
         <p className="mb-6 text-sm sm:text-lg text-[#6E6E6E]">
-          Just in time for the holidays — verify below to access your private
-          lane before it closes.
+          Join a private, high-value network curated daily to help you level up
+          in lifestyle, income, fitness, and more.
         </p>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -206,32 +206,42 @@ export default function Page() {
           </div>
 
           <div className="flex items-center justify-center gap-6 sm:gap-4 py-3">
-            <label className="flex items-center gap-3 sm:gap-2 cursor-pointer">
-              <input
-                name="gender"
-                type="radio"
-                value="female"
-                checked={gender === "female"}
-                onChange={() => setGender("female")}
-                className="size-5 sm:size-4 rounded-full border-2 border-[#E7B8A5] accent-[#E7B8A5]"
-                required
-              />
-              <span className="text-[#1E1E1E] font-medium text-sm sm:text-lg">
-                Female
+            <label className="flex flex-col items-center gap-1 cursor-pointer">
+              <div className="flex items-center gap-3 sm:gap-2">
+                <input
+                  name="gender"
+                  type="radio"
+                  value="female"
+                  checked={gender === "female"}
+                  onChange={() => setGender("female")}
+                  className="size-5 sm:size-4 rounded-full border-2 border-[#E7B8A5] accent-[#E7B8A5]"
+                  required
+                />
+                <span className="text-[#1E1E1E] font-medium text-sm sm:text-lg">
+                  I'm a woman
+                </span>
+              </div>
+              <span className="text-xs text-[#6E6E6E] italic">
+                just to personalize your experience
               </span>
             </label>
-            <label className="flex items-center gap-3 sm:gap-2 cursor-pointer">
-              <input
-                name="gender"
-                type="radio"
-                value="male"
-                checked={gender === "male"}
-                onChange={() => setGender("male")}
-                className="size-5 sm:size-4 rounded-full border-2 border-[#255DF6] accent-[#255DF6]"
-                required
-              />
-              <span className="text-[#1E1E1E] font-medium text-sm sm:text-lg">
-                Male
+            <label className="flex flex-col items-center gap-1 cursor-pointer">
+              <div className="flex items-center gap-3 sm:gap-2">
+                <input
+                  name="gender"
+                  type="radio"
+                  value="male"
+                  checked={gender === "male"}
+                  onChange={() => setGender("male")}
+                  className="size-5 sm:size-4 rounded-full border-2 border-[#255DF6] accent-[#255DF6]"
+                  required
+                />
+                <span className="text-[#1E1E1E] font-medium text-sm sm:text-lg">
+                  I'm a man
+                </span>
+              </div>
+              <span className="text-xs text-[#6E6E6E] italic">
+                just to personalize your experience
               </span>
             </label>
           </div>
@@ -240,12 +250,26 @@ export default function Page() {
             type="submit"
             className="w-full h-12 sm:h-10 rounded-lg text-white font-semibold transition-all hover:opacity-90 text-sm sm:text-lg"
             style={{
-              backgroundColor: gender === "male" ? "#255DF6" : "#E7B8A5",
-              color: gender === "male" ? "#FFFFFF" : "#2F3439",
+              backgroundColor:
+                gender === "male"
+                  ? "#255DF6"
+                  : gender === "female"
+                  ? "#E7B8A5"
+                  : "#6E6E6E",
+              color:
+                gender === "male"
+                  ? "#FFFFFF"
+                  : gender === "female"
+                  ? "#2F3439"
+                  : "#FFFFFF",
               boxShadow: "0 4px 10px rgba(0,0,0,0.06)",
             }}
           >
-            Continue →
+            {gender === "male"
+              ? "🔥 Enter Prime Lane →"
+              : gender === "female"
+              ? "💫 Enter Her Lane →"
+              : "Select Your Lane →"}
           </button>
         </form>
       </div>
